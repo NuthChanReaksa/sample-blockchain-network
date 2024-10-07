@@ -5,18 +5,17 @@ set -e
 set -o pipefail 
 function init(){
     echo "Adding the bin of hyperledger fabric to the PATH..."
-    export PATH=$PATH:/home/keo/Documents/blockchain_related/simple-blockchain-demon/personal-network/bin
+    export PATH=$PATH:/home/raksa/BlockChain-Advanced-ITE2/mini-project/simple-blockchain-demo/simple-blockchain-demo/personal-network/bin
     # we should use this 
     # export .. $(pwd)/config 
-    export FABRIC_CFG_PATH=/home/keo/Documents/blockchain_related/simple-blockchain-demon/personal-network/config
+    export FABRIC_CFG_PATH=/home/raksa/BlockChain-Advanced-ITE2/mini-project/simple-blockchain-demo/simple-blockchain-demo/personal-network/config
 }
 
 function generateCryptoConfig(){
 
     # crypto-materials 
     echo "I.Generating crypto-config artifacts..."
-    cryptogen generate --config=crypto-config.yaml \
-        --output=crypto-config
+    cryptogen generate --config=crypto-config.yaml --output=crypto-config
 
 }
 
@@ -56,7 +55,7 @@ function upNetwork(){
     # for container in "${containers[@]}"; do
     #     echo "Checking $container..."
     #     while true; do
-    #         status=$(docker inspect -f '{{.State.Status}}' $container 2>/dev/null)
+    #         status=$(docker inspect -f '{{.State/home/keo/Documents/blockchain_related/simple-blockchain-demon/personal-network.Status}}' $container 2>/dev/null)
     #         if [ "$status" = "running" ]; then
     #             echo "$container is up and running"
     #             break
@@ -138,7 +137,7 @@ function createChannel(){
         echo "4.a Joining the channel (for the Org1)..."
         echo "DEBUG: Showing the values that has been exported...." 
         showExported
-        peer channel join -b channeldemo.block \
+        peer channel join -b channeldemo.block \/home/keo/Documents/blockchain_related/simple-blockchain-demon/personal-network
             --tls --cafile $ORDERER_CA
 
         echo "Updating the anchor peer on Org1..."
@@ -272,13 +271,7 @@ function deployChaincode(){
         echo "3.2. Installing the chaincode on <<Org1>>..."
         peer lifecycle chaincode install becc.tar.gz
         
-        setOrgEnv "org2" "peer0" "7051"
-        echo "3.2. Installing the chaincode on <<Org2>>...."
-        peer lifecycle chaincode install becc.tar.gz
-        
-        echo "3.3. Querying the installed chaincode..."
-        output=$(peer lifecycle chaincode queryinstalled)
-        package_id=$(echo "$output" | grep -oP "Package ID: \K[^,]+")
+        setOrgEnv "org2" "peer0" "7051"affe0cfd1598]+")
         CC_PACKAGE_ID=$package_id
         echo "CC_PACKAGE_ID=$CC_PACKAGE_ID"
         export CC_PACKAGE_ID=$CC_PACKAGE_ID
