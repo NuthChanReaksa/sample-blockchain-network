@@ -236,7 +236,20 @@ function createChannel(){
             --name becc
 
         # init 
+        export ORDERER_CA=/opt/gopath/fabric-samples/personal-network/crypto-config/ordererOrganizations/personal-network.com/orderers/orderer.personal-network.com/msp/tlscacerts/tlsca.personal-network.com-cert.pem
+        export PEER_ORG1_TLSROOTCERTFILES=/opt/gopath/fabric-samples/personal-network/crypto-config/peerOrganizations/org1.personal-network.com/peers/peer0.org1.personal-network.com/tls/ca.crt
+        export PEER_ORG2_TLSROOTCERTFILES=/opt/gopath/fabric-samples/personal-network/crypto-config/peerOrganizations/org2.personal-network.com/peers/peer0.org2.personal-network.com/tls/ca.crt
+ 
+        peer chaincode invoke -o orderer.personal-network.com:7050 \
+            --tls true --cafile $ORDERER_CA -C channeldemo \
+            -n becc --peerAddresses peer0.org1.personal-network.com:7051 \
+            --tlsRootCertFiles $PEER_ORG1_TLSROOTCERTFILES --peerAddresses peer0.org2.personal-network.com:7051 \
+            --tlsRootCertFiles $PEER_ORG2_TLSROOTCERTFILES \
+            --isInit -c "{\"function\":\"initLedger\",\"Args\":[]}"
+
         # queryAllProducts here ! 
+        peer chaincode query -C channeldemo -n becc -c "{\"Args\":[\"queryAllProducts\"]}" | jq .
+
     '
     }
 
