@@ -248,7 +248,8 @@ function createChannel(){
             --isInit -c "{\"function\":\"initLedger\",\"Args\":[]}"
 
         # queryAllProducts here ! 
-        peer chaincode query -C channeldemo -n becc -c "{\"Args\":[\"queryAllProducts\"]}" | jq .
+       peer chaincode query -C channeldemo -n becc -c "{\"Args\":[\"queryAllProducts\"]}" | jq
+       
 
     '
     }
